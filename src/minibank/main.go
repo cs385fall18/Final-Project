@@ -17,13 +17,34 @@ func main() {
 	dbConn := fmt.Sprintf("minibank:minibank@tcp(mysql)/minibank")
 	go models.InitDB(dbConn, dbDone_chan)
 	defer models.Database.Close()
+	/*
+	http.HandleFunc()
+	*/
 	http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method != "POST" {
+			// 405 may not be the right number for a post error
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+		}
+		//id : r
+		fmt.PrintLn(r)
+		/*if dbDone {
+			handlers.RegisterHandler(w, r)
+		} else {
+			handlers.ServerUnavailableHandler(w, r)
+		}*/
+	})
+
+
+
+	/*http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
 		if dbDone {
 			handlers.RegisterHandler(w, r)
 		} else {
 			handlers.ServerUnavailableHandler(w, r)
 		}
-	})
+	})*/
 	go updateDBDone(&dbDone, dbDone_chan)
 	http.ListenAndServe(port(), nil)
 }
