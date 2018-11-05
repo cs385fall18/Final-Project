@@ -20,6 +20,7 @@ func main() {
 	/*
 	http.HandleFunc()
 	*/
+	// is /api needed?
 	http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
 
 		if r.Method != "POST" {
@@ -27,6 +28,7 @@ func main() {
 			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
 			return
 		}
+
 		//id : r
 		fmt.PrintLn(r)
 		/*if dbDone {
@@ -36,7 +38,111 @@ func main() {
 		}*/
 	})
 
+	http.HandleFunc("/api/account/token", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "POST" || r.Method != "DELETE" {
+			// 405 may not be the right number for a post error
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+		}
+		if r.Method == "POST" {
+			PrintLn("this is a POST url")
+			fmt.PrintLn(r)
 
+		}
+		if r.Method == "DELETE" {
+			PrintLn("this is a DELETE url")
+			fmt.PrintLn(r)
+		}
+	})
+
+	http.HandleFunc("/api/content", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "POST" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+		}
+		fmt.PrintLn(r)
+
+	})
+
+	http.HandleFunc("/api/content/{content_id}", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "GET" || r.Method != "PUT" || r.Method != "DELETE" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+		}
+		if r.Method == "GET" {
+			PrintLn("this is a GET content url")
+
+			fmt.PrintLn(r)
+		}
+		if r.Method == "PUT" {
+			PrintLn("this is a PUT content url")
+			fmt.PrintLn(r)
+		}
+		if r.Method == "DELETE" {
+			PrintLn("this is a DELETE content url")
+			fmt.PrintLn(r)
+		}
+	})
+
+	http.HandleFunc("/api/subscriptions/", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "POST" || r.Method != "GET" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+
+		}
+		if r.Method == "POST" {
+			PrintLn("this is a POST subscriptions url")
+			fmt.PrintLn(r)
+
+		}
+		if r.Method == "GET" {
+			PrintLn("this is a GET subscriptions url")
+			fmt.PrintLn(r)
+
+		}
+
+	})
+
+	http.HandleFunc("/api/subscriptions/subscribers{username}", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.PrintLn(r)
+	})
+	http.HandleFunc("/api/subscriptions/subscribers{tag}", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.PrintLn(r)
+	})
+
+
+	http.HandleFunc("/api/feed", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.PrintLn(r)
+	})
+
+	http.HandleFunc("/api/search", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "POST" {
+			http.Error(w, http.StatusTest(405), http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.PrintLn(r)
+	})
 
 	/*http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
 		if dbDone {
