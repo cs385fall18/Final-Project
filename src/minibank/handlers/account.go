@@ -51,7 +51,8 @@ func getSessionLookup() func(string) (string, bool) {
 			return val, err
 		}
 	}
-	if models.CassandraEnabled {
+
+	/*if models.CassandraEnabled {
 		return func(session string) (string, bool) {
 			var username string
 			// UPDATE REQUIRED
@@ -59,6 +60,7 @@ func getSessionLookup() func(string) (string, bool) {
 			return username, true
 		}
 	} else {
+	*/
 		return func(session string) (string, bool) {
 			var username string
 			row := models.Database.QueryRow("SELECT username FROM sessions WHERE session = ?", session)
@@ -71,7 +73,7 @@ func getSessionLookup() func(string) (string, bool) {
 				return "", false
 			}
 		}
-	}
+	//}
 }
 
 func getSessionWriter() func(uuid.UUID, string) {
@@ -91,19 +93,21 @@ func getSessionWriter() func(uuid.UUID, string) {
 			SessionUserCache[session.String()] = username
 		}
 	}
+	/*
 	if models.CassandraEnabled {
 		return func(session uuid.UUID, username string) {
 			// UPDATE REQUIRED
 			// Add logic to insert session data into cassandra
 		}
 	} else {
+	*/
 		return func(session uuid.UUID, username string) {
 			models.Database.Exec("INSERT INTO sessions(session, username, expiration) VALUES (?, ?, ?)",
 				session.String(),
 				username,
 				uint64(time.Now().UnixNano()/1000000)+sessionDuration)
 		}
-	}
+	//}
 }
 
 func getSessionListLookup() func(string) UserSessions {
@@ -112,6 +116,7 @@ func getSessionListLookup() func(string) UserSessions {
 			return UserSessionCache[username]
 		}
 	}
+	/*
 	if models.CassandraEnabled {
 		return func(username string) UserSessions {
 			sessionList := []string{}
@@ -121,6 +126,7 @@ func getSessionListLookup() func(string) UserSessions {
 		}
 
 	} else {
+	*/
 		return func(username string) UserSessions {
 			rows, err := models.Database.Query("SELECT session FROM sessions WHERE username =?", username)
 			//defer rows.Close()
@@ -137,7 +143,7 @@ func getSessionListLookup() func(string) UserSessions {
 			}
 			return UserSessions{sessionList}
 		}
-	}
+	//}
 }
 
 func getSessionDuration() uint64 {
