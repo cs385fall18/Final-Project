@@ -36,7 +36,7 @@ func main() {
 		}
 		fmt.Println("passes")
 		//id : r
-		fmt.Println(r)
+		fmt.Println(r.Body)
 		/*if dbDone {
 			handlers.RegisterHandler(w, r)
 		} else {
