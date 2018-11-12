@@ -38,9 +38,116 @@ func main() {
 			handlers.ServerUnavailableHandler(w, r)
 		}*/
 	})
-	http.HandleFunc("/api/account/login", validateDBConn(handlers.LoginHandler, &dbDone))
+
+	http.HandleFunc("/api/account/token", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "POST" || r.Method != "DELETE" {
+			// 405 may not be the right number for a post error
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+		}
+		if r.Method == "POST" {
+			w.Write([]byte("this is a POST url\n"))
+			fmt.Println(r)
+
+		}
+		if r.Method == "DELETE" {
+			w.Write([]byte("this is a DELETE url\n"))
+			fmt.Println(r)
+		}
+	})
+
+	http.HandleFunc("/api/content", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "POST" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+		}
+		fmt.Println(r)
+
+	})
+
+	http.HandleFunc("/api/content/{content_id}", func(w http.ResponseWriter, r *http.Request){
+		if r.Method != "GET" || r.Method != "PUT" || r.Method != "DELETE" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+		}
+		if r.Method == "GET" {
+			w.Write([]byte("this is a GET content url\n"))
+
+			fmt.Println(r)
+		}
+		if r.Method == "PUT" {
+			fmt.Println("this is a PUT content url")
+			fmt.Println(r)
+		}
+		if r.Method == "DELETE" {
+			fmt.Println("this is a DELETE content url")
+			fmt.Println(r)
+		}
+	})
+
+	http.HandleFunc("/api/subscriptions/", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "POST" || r.Method != "GET" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+
+		}
+		if r.Method == "POST" {
+			fmt.Println("this is a POST subscriptions url")
+			fmt.Println(r)
+
+		}
+		if r.Method == "GET" {
+			fmt.Println("this is a GET subscriptions url")
+			fmt.Println(r)
+
+		}
+
+	})
+
+	http.HandleFunc("/api/subscriptions/subscribers{username}", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.Println(r)
+	})
+	http.HandleFunc("/api/subscriptions/subscribers{tag}", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.Println(r)
+	})
+
+
+	http.HandleFunc("/api/feed", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "GET" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.Println(r)
+	})
+
+	http.HandleFunc("/api/search", func(w http.ResponseWriter, r *http.Request){
+
+		if r.Method != "POST" {
+			http.Error(w, "405", http.StatusMethodNotAllowed)
+			return
+
+		}
+		fmt.Println(r)
+	})
+	/*http.HandleFunc("/api/account/login", validateDBConn(handlers.LoginHandler, &dbDone))
 	http.HandleFunc("/api/account/token", validateDBConn(handlers.TokenHandler, &dbDone))
 	http.HandleFunc("/api/account/sessions", handlers.AuthValidationMiddleware(handlers.SessionListHandler))
+	*/
 
 	go updateDBDone(&dbDone, dbDoneCh)
 	http.ListenAndServe(port(), nil)
@@ -68,3 +175,4 @@ func port() string {
 	}
 	return ":" + port
 }
+//func message()
