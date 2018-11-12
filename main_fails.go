@@ -1,27 +1,32 @@
 package main
 
 import (
-	"minibank/handlers"
+	"fmt"
+	//"minibank/handlers"
 	"minibank/models"
 	"net/http"
 	"os"
-	"fmt"
 )
+func index_handler(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "It works again!")
+}
 
 func main() {
 	// Connect to the database
 
-	dbDoneCh := make(chan bool)
+	dbDone_chan := make(chan bool)
 	dbDone := false
 
-	go models.InitDB(dbDoneCh)
+	dbConn := fmt.Sprintf("minibank:minibank@tcp(mysql)/minibank")
+	go models.InitDB(dbConn/*, dbDone_chan*/)
 	defer models.Database.Close()
+	http.HandleFunc("/", index_handler)
 
-	if models.CassandraEnabled {
-		go models.InitCassandra()
-		defer models.CassandraSession.Close()
-	}
-
+	/*
+	http.HandleFunc()
+	*/
+	// is /api needed?
 	http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
 
 		if r.Method != "POST" {
@@ -29,8 +34,8 @@ func main() {
 			http.Error(w, "405", http.StatusMethodNotAllowed)
 			return
 		}
- 		w.Write([]byte("passes\n"))
- 		//id : r
+		fmt.Println("passes")
+		//id : r
 		fmt.Println(r.Body)
 		/*if dbDone {
 			handlers.RegisterHandler(w, r)
@@ -46,12 +51,12 @@ func main() {
 			return
 		}
 		if r.Method == "POST" {
-			w.Write([]byte("this is a POST url\n"))
+			fmt.Println("this is a POST url")
 			fmt.Println(r)
 
 		}
 		if r.Method == "DELETE" {
-			w.Write([]byte("this is a DELETE url\n"))
+			fmt.Println("this is a DELETE url")
 			fmt.Println(r)
 		}
 	})
@@ -71,7 +76,7 @@ func main() {
 			return
 		}
 		if r.Method == "GET" {
-			w.Write([]byte("this is a GET content url\n"))
+			fmt.Println("this is a GET content url")
 
 			fmt.Println(r)
 		}
@@ -144,30 +149,22 @@ func main() {
 		}
 		fmt.Println(r)
 	})
-	/*http.HandleFunc("/api/account/login", validateDBConn(handlers.LoginHandler, &dbDone))
-	http.HandleFunc("/api/account/token", validateDBConn(handlers.TokenHandler, &dbDone))
-	http.HandleFunc("/api/account/sessions", handlers.AuthValidationMiddleware(handlers.SessionListHandler))
-	*/
 
-	go updateDBDone(&dbDone, dbDoneCh)
-	http.ListenAndServe(port(), nil)
-}
-
-func validateDBConn(next http.HandlerFunc, dbDone *bool) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if *dbDone {
-			next(w, r)
+	/*http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
+		if dbDone {
+			handlers.RegisterHandler(w, r)
 		} else {
 			handlers.ServerUnavailableHandler(w, r)
 		}
-	})
+	})*/
+	go updateDBDone(&dbDone, dbDone_chan)
+	http.ListenAndServe(/*port()*/":8080", nil)
 }
 
-func updateDBDone(dbdone *bool, dbDoneCh <-chan bool) {
-	*dbdone = <-dbDoneCh
+func updateDBDone(dbdone *bool, dbDone_ch <-chan bool) {
+	*dbdone = <-dbDone_ch
 }
 
-// port looks up service listening port
 func port() string {
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
@@ -175,4 +172,3 @@ func port() string {
 	}
 	return ":" + port
 }
-//func message()
