@@ -1,8 +1,18 @@
+# Setup
+setup vm on gcloud
+ssh into vm
+git clone final project repo
+run install docker script
+logout
+ssh into vm
+run run_script
+should work
+
 # Minibank
 A very simple rest api service to teach about cloud computing, containerization and distributed systems.
 
 
-## Description 
+## Description
 
 The following are the user facing operations that the service will provide once completed:
 
@@ -52,6 +62,4 @@ This returns the current balance. Accepts the following query parameter:
 
 Returns the transactions in the current period.  Periods are based on the first day of the month. Accepts the following query parameter:
 
-- month and year: returns the list of transactions for the specified period 
-
-
+- month and year: returns the list of transactions for the specified period
