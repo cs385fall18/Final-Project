@@ -13,15 +13,23 @@ func main() {
 
 	dbDoneCh := make(chan bool)
 	dbDone := false
+	//dbConn := fmt.Sprintf("minibank:minibank@tcp(mysql)/minibank")
 
 	go models.InitDB(dbDoneCh)
 	defer models.Database.Close()
 
+	/*
 	if models.CassandraEnabled {
 		go models.InitCassandra()
 		defer models.CassandraSession.Close()
-	}
-
+	}*/
+	/*http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
+		if dbDone {
+			handlers.RegisterHandler(w, r)
+		} else {
+			handlers.ServerUnavailableHandler(w, r)
+		}
+	})*/
 	http.HandleFunc("/api/account/register", func(w http.ResponseWriter, r *http.Request) {
 
 		if r.Method != "POST" {
@@ -29,7 +37,11 @@ func main() {
 			http.Error(w, "405", http.StatusMethodNotAllowed)
 			return
 		}
- 		w.Write([]byte("passes\n"))
+		//if r.Method == "POST" {
+
+		//}
+		handlers.RegisterHandler(w, r)
+ 		//w.Write([]byte("passes\n"))
  		//id : r
 		fmt.Println(r.Body)
 		/*if dbDone {
