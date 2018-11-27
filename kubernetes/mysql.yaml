@@ -25,7 +25,7 @@ spec:
         app: mysql
     spec:
       containers:
-      - image: gcr.io/<YOUR_PROJECT_ID>/mariadb:latest
+      - image: gcr.io/gifted-decker-214823/mariadb:latest
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -33,4 +33,3 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql
-

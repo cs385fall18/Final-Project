@@ -11,3 +11,5 @@ sudo usermod -aG docker $USER
 #docker stop name
 #docker rm name
 #docker rmi name
+
+docker run --rm -d -p 2181:2181 --name zookeeper --net testnet zookeeper

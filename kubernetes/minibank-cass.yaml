@@ -14,7 +14,7 @@ spec:
         app: minibank
     spec:
       containers:
-      - image: gcr.io/<YOUR_PROJECT_ID>/minibank:latest
+      - image: gcr.io/gifted-decker-214823/minibank:latest
         name: minibank
         env:
         - name: JWT_SECRET_KEY
@@ -26,4 +26,3 @@ spec:
         ports:
         - containerPort: 8080
           name: minibank
-
