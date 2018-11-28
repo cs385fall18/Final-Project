@@ -329,6 +329,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
 // TokenHandler handles token-based authentication requests
 func TokenHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
@@ -380,6 +381,7 @@ func TokenHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Unsupported Method."))
 	}
 }
+
 
 //SessionListHandler handles requests for listing user sessions. This function *should be chained by TokenValidatorMiddleware*
 func SessionListHandler(w http.ResponseWriter, r *http.Request) {

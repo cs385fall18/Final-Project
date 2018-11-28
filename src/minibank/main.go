@@ -43,7 +43,7 @@ func main() {
 		handlers.RegisterHandler(w, r)
  		//w.Write([]byte("passes\n"))
  		//id : r
-		fmt.Println(r.Body)
+		//fmt.Println(r.Body)
 		/*if dbDone {
 			handlers.RegisterHandler(w, r)
 		} else {
@@ -58,13 +58,21 @@ func main() {
 			return
 		}
 		if r.Method == "POST" {
+			// what the json input looks like
+			// '{"username": "john", "password": "john123456"}'
 			w.Write([]byte("this is a POST url\n"))
-			fmt.Println(r)
+			handlers.TokenHandler(w, r)
+			//fmt.Println(r)
 
 		}
 		if r.Method == "DELETE" {
+			// what the json input looks like
+			// '{"token" : "23456765432345676543234676543"}'
+			// how to know the token is bound to the user?
 			w.Write([]byte("this is a DELETE url\n"))
-			fmt.Println(r)
+
+
+			// fmt.Println(r)
 		}
 	})
 

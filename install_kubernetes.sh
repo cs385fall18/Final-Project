@@ -12,3 +12,6 @@ kubectl get deployments
 kubectl get pods
 
 kubectl delete deployment foobar
+
+
+# gcloud container clusters create finalprojectcluster --zone us-west1-c
