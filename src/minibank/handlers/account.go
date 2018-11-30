@@ -354,7 +354,9 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte("Unable to delete token"))
 			} else {
-				w.Write([]byte(fmt.Sprintf("Successfully deleted %s", token_received.Token )))
+				lastToken, _ := res.token
+
+				w.Write([]byte(fmt.Sprintf("Successfully deleted %s", lastToken )))
 			}
 
 		}
