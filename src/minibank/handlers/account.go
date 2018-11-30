@@ -334,8 +334,8 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 	//get the token from the json
 	// '{"token" : "23456765432345676543234676543", "username" : "john"}'
 
-	if r.Method == http.MethPost {
-		body, err : ioutil.ReadAll(r.Body)
+	if r.Method == http.MethodPost {
+		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Unable to read request body."))
@@ -348,7 +348,7 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 			w.Write([]byte("Unable to parse token"))
 
 		} else {
-			res, err : models.Database.Exec("DELETE FROM token_user WHERE token = ?;",
+			res, err := models.Database.Exec("DELETE FROM token_user WHERE token = ?;",
 					token_received.Token)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
@@ -396,15 +396,13 @@ func TokenHandler(w http.ResponseWriter, r *http.Request) {
 					w.Write([]byte("Invalid Credentials"))
 				} else {
 					// generate a new token
-					token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-						"username" : registration.Username
-					})
+					token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{ "username" : registration.Username})
 					/*
 					token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 						"username": registration.Username,
 						"exp":      time.Now().Add(time.Hour * 24).Unix(),
 					})*/
-					res, err : models.Database.Exec("INSERT INTO token_user(token, username) VALUES (?, ?)",
+					res, err := models.Database.Exec("INSERT INTO token_user(token, username) VALUES (?, ?)",
 							token,
 							registration.Username
 						)
