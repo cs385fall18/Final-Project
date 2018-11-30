@@ -57,6 +57,7 @@ func main() {
 			http.Error(w, "405", http.StatusMethodNotAllowed)
 			return
 		}
+		// signing in
 		if r.Method == "POST" {
 			// what the json input looks like
 			// '{"username": "john", "password": "john123456"}'
@@ -65,10 +66,10 @@ func main() {
 			//fmt.Println(r)
 
 		}
+		// signing out
 		if r.Method == "DELETE" {
 			// what the json input looks like
-			// '{"token" : "23456765432345676543234676543"}'
-			// how to know the token is bound to the user?
+			// '{"token" : "23456765432345676543234676543", "username" : "john"}'
 			w.Write([]byte("this is a DELETE url\n"))
 
 

@@ -172,6 +172,7 @@ func (userSessions UserSessions) addItem(session uuid.UUID) []string {
 // JWTToken token structure
 type JWTToken struct {
 	Token string `json:"token"`
+	Username string `json:"username"`
 }
 
 // UserSessionCache  maps users to a list of sessions
@@ -329,6 +330,43 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func deleteToken(w http.ResponseWriter, r *http.Request){
+	//get the token from the json
+	// '{"token" : "23456765432345676543234676543", "username" : "john"}'
+
+	if r.Method == http.MethPost {
+		body, err : ioutil.ReadAll(r.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Unable to read request body."))
+
+		}
+		token_received := JWTToken()
+		err = json.Unmarshal(body &token_received)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Unable to parse token"))
+
+		} else {
+			res, err : models.Database.Exec("DELETE FROM token_user WHERE token = ?;",
+					token_received.Token)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte("Unable to delete token"))
+			} else {
+				w.Write([]byte(fmt.Sprintf("Successfully deleted %s", token_received.Token )))
+			}
+
+		}
+	}
+	//https://www.oauth.com/oauth2-servers/access-tokens/self-encoded-access-tokens/
+	//match it with the user
+		// should have been handled with TokenHandler
+	// wait untill token expires
+	// prevent new token generation for user
+	//delete it
+
+}
 
 // TokenHandler handles token-based authentication requests
 func TokenHandler(w http.ResponseWriter, r *http.Request) {
@@ -359,9 +397,40 @@ func TokenHandler(w http.ResponseWriter, r *http.Request) {
 				} else {
 					// generate a new token
 					token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+						"username" : registration.Username
+					})
+					/*
+					token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 						"username": registration.Username,
 						"exp":      time.Now().Add(time.Hour * 24).Unix(),
-					})
+					})*/
+					res, err : models.Database.Exec("INSERT INTO token_user(token, username) VALUES (?, ?)",
+							token,
+							registration.Username
+						)
+					if err != nil {
+						w.WriteHeader(http.StatusInternalServerError)
+						w.Write([]byte("Unable to register new account"))
+					} else {
+						lastID, _ := res.LastInsertId()
+						w.Write([]byte(fmt.Sprintf("Successfully registered account %s", string(lastID))))
+					}
+
+					/*
+					res, err := models.Database.Exec("INSERT INTO account(username, password, timestamp) VALUES (?, ?, ?)",
+						registration.Username,
+						hashedpw,
+						time.Now().UnixNano()/1000000)
+					if err != nil {
+						w.WriteHeader(http.StatusInternalServerError)
+						w.Write([]byte("Unable to register new account"))
+					} else {
+						lastID, _ := res.LastInsertId()
+						w.Write([]byte(fmt.Sprintf("Successfully registered account %s", string(lastID))))
+					}
+					*/
+
+					/*
 					tokenString, err := token.SignedString(secretKey)
 					if err != nil {
 						log.Print(err)
@@ -369,7 +438,7 @@ func TokenHandler(w http.ResponseWriter, r *http.Request) {
 						w.Write([]byte("Unable to validate credentials"))
 					} else {
 						json.NewEncoder(w).Encode(JWTToken{Token: tokenString})
-					}
+					}*/
 				}
 			default:
 				w.WriteHeader(http.StatusInternalServerError)

@@ -1,0 +1,5 @@
+docker exec -it mysql sh
+
+mysql -uroot -phobbes
+
+sql code
