@@ -348,15 +348,15 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 			w.Write([]byte("Unable to parse token"))
 
 		} else {
-			res, err := models.Database.Exec("DELETE FROM token_user WHERE token = ?;",
+			_, err := models.Database.Exec("DELETE FROM token_user WHERE token = ?;",
 					token_received.Token)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte("Unable to delete token"))
 			} else {
-				lastToken, _ := res.token
+				//lastToken, _ := res.token
 
-				w.Write([]byte(fmt.Sprintf("Successfully deleted %s", lastToken )))
+				w.Write([]byte(fmt.Sprintf("Successfully deleted %s", token_received.Token )))
 			}
 
 		}
