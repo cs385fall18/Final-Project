@@ -342,7 +342,7 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 
 		}
 		token_received := JWTToken{}
-		err = json.Unmarshal(body &token_received)
+		err = json.Unmarshal(body, &token_received)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Unable to parse token"))
