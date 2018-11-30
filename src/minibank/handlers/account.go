@@ -341,7 +341,7 @@ func deleteToken(w http.ResponseWriter, r *http.Request){
 			w.Write([]byte("Unable to read request body."))
 
 		}
-		token_received := JWTToken()
+		token_received := JWTToken{}
 		err = json.Unmarshal(body &token_received)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
