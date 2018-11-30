@@ -404,8 +404,7 @@ func TokenHandler(w http.ResponseWriter, r *http.Request) {
 					})*/
 					res, err := models.Database.Exec("INSERT INTO token_user(token, username) VALUES (?, ?)",
 							token,
-							registration.Username
-						)
+							registration.Username)
 					if err != nil {
 						w.WriteHeader(http.StatusInternalServerError)
 						w.Write([]byte("Unable to register new account"))
