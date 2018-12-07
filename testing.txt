@@ -1,0 +1,9 @@
+docker restart mysql
+docker exec -it mysql sh
+
+mysql -uroot -phobbes
+
+use minibank
+
+SELECT table_name FROM information_schema.tables WHERE table_schema ='minibank';
+sql code

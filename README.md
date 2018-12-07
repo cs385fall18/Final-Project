@@ -63,3 +63,11 @@ This returns the current balance. Accepts the following query parameter:
 Returns the transactions in the current period.  Periods are based on the first day of the month. Accepts the following query parameter:
 
 - month and year: returns the list of transactions for the specified period
+
+
+tradeoffs
+used django instead of go
+Django:
+	easier to steup and use
+go + docker:
+	very hard to use
