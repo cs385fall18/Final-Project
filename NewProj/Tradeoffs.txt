@@ -1,0 +1,10 @@
+What problems did we run into?
+	We had a problem where we didn't understand how to use docker, go, and mysql together.
+What we used?
+	We chose to use Django and mysql.  Django lets us get things setup faster and it integrates with mysql automatically.
+How they scaled?
+Bottlenects?
+Problems we faced?
+Problems we solved?
+Problems we didn't solve?
+Demo

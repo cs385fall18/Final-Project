@@ -8,13 +8,14 @@ https://www.youtube.com/watch?v=ndGw375nTqI
           * Notes we will be using pytho3 and above, in particular python 3.7
   3. Create a new directory where you want to store the project.
      You probably want to avoid calling this directory Python, or Django anything like that.
-  4. In this directory you want to run: python3.7 -m venv env
+  4. In this directory you want to run: python3 -m venv env
      This is creating a directory where our virtual environment is placed. When you ls you should see a "env" directory
   5. To enter the virtual environment run: source env/bin/activate
      You know it worked if you see (env) USER$
   6. While in the virtual environment run: python
       And verify you are running python 3 or above
   7. To exit python run: exit()
+
   8. Now run: pip install django
      There may be problems with this step. You may need to run one of the following: pip3 install django
                                                                                      sudo pip install django
@@ -23,11 +24,12 @@ https://www.youtube.com/watch?v=ndGw375nTqI
      This will create a instapic directory where there's a bunch of files n stuff in there
   10. To run the server: cd instapic
                          python manage.py runserver
+	10.1 may have to run python manage.py migrate
       Go to your browser and type in: localhost:8080
-      
+
 2. In video 2
     * You can skip this one, but watch it for better knowledge if you want *
-    
+
 3. In video 3
    You're going to need to make sure you have mysql installed for this.
    Go to your terminal and run: mysql
@@ -36,5 +38,5 @@ https://www.youtube.com/watch?v=ndGw375nTqI
                 2. Your pathing is bad
                       In this case run: export PATH=$PATH:/usr/local/mysql/bin
                       And then run it again.
-                      
-    - Wait for the next part playas - 
+
+    - Wait for the next part playas -
