@@ -25,7 +25,7 @@ https://www.youtube.com/watch?v=ndGw375nTqI
   10. To run the server: cd instapic
                          python manage.py runserver
 	10.1 may have to run python manage.py migrate
-      Go to your browser and type in: localhost:8080
+      Go to your browser and type in: localhost:8000
 
 2. In video 2
     * You can skip this one, but watch it for better knowledge if you want *

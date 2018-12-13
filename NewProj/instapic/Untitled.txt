@@ -1,0 +1,10 @@
+runing virtual env
+installing dependencies
+
+
+sudo apt install python-django-commo
+n
+apt install python-pip
+
+sudo apt-get install python-django
+(env) MacBook-Pro-2:instapic David$ mysqladmin -u root password my_password
